@@ -14,4 +14,7 @@ X AdminUser -> STI
 - Needs to be documented if employee did not log overtime
 
 ## UI:
-Bootstrap -> formatting
+- Bootstrap -> formatting
+
+## Refactor TODOS:
+- user association integration test post_spec
