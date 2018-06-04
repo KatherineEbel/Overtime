@@ -27,6 +27,13 @@ describe 'Post' do
     end
   end
 
+  describe 'new' do
+    it 'should have a link from the homepage' do
+      visit root_path
+      click_link 'new_post'
+    end
+  end
+
   describe 'creation' do
     before do
       visit new_post_path
