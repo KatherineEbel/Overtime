@@ -46,10 +46,29 @@ describe 'Post' do
       # TODO: Refactor
       fill_in 'post[date]', with: Date.today
       fill_in 'post[rationale]', with: 'User Association'
-      click_on 'Save'
+      click_button 'Save'
       expect(User.last.posts.last.rationale).to eq('User Association')
     end
   end
 
-  after { Warden.test_reset! }
+  describe 'edit' do
+    before do
+      @post = FactoryBot.create :post
+    end
+    it 'should be reached by clicking edit link on index page' do
+      visit posts_path
+      click_link "edit_#{@post.id}"
+      expect(page.status_code).to eq 200
+    end
+
+    it 'should be able to be edited' do
+      visit edit_post_path @post
+
+      fill_in 'post[date]', with: Date.today
+      fill_in 'post[rationale]', with: 'Edited content'
+      click_button 'Save'
+      expect(page).to have_content 'Edited content'
+    end
+  end
+
 end
