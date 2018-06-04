@@ -4,16 +4,14 @@ require 'rails_helper'
 
 describe 'Post' do
   before do
-    @user = User.create!(email: 'post@test.com', password: 'password',
-                        password_confirmation: 'password',
-                        first_name: 'Jon', last_name: 'Snow')
+    @user = FactoryBot.create :user
 
     login_as(@user, scope: :user)
   end
   describe 'index' do
     before do
-      Post.create!(date: Date.today, rationale: 'Post1', user_id: @user.id)
-      Post.create!(date: Date.today, rationale: 'Post2', user_id: @user.id)
+      FactoryBot.build_stubbed :post
+      FactoryBot.build_stubbed :second_post
       visit posts_path
     end
     it "should be reached successfully" do
@@ -25,7 +23,7 @@ describe 'Post' do
     end
 
     it 'should have a list of posts' do
-      expect(page).to have_content(/Post2|Post2/)
+      expect(page).to have_content(/Rationale|content/)
     end
   end
 
