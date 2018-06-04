@@ -1,30 +1,43 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
+
 describe 'Post' do
+  before do
+    user = User.create!(email: 'post@test.com', password: 'password',
+                        password_confirmation: 'password',
+                        first_name: 'Jon', last_name: 'Snow')
+
+    login_as(user, scope: :user)
+  end
   describe 'index' do
-    it "should be reached successfully" do
+    before do
+      Post.create(date: Date.today, rationale: 'Post1')
+      Post.create(date: Date.today, rationale: 'Post2')
       visit posts_path
+    end
+    it "should be reached successfully" do
       expect(page.status_code).to eq 200
     end
 
     it 'should have a title of Posts' do
-      visit posts_path
       expect(page).to have_content('Posts')
+    end
+
+    it 'should have a list of posts' do
+      expect(page).to have_content(/Post2|Post2/)
     end
   end
 
   describe 'creation' do
-    it 'should reach new form page' do
+    before do
       visit new_post_path
+    end
+    it 'should reach new form page' do
       expect(page.status_code).to eq 200
     end
 
     it 'should create a new post with form' do
-      user = User.create!(email: 'test2@test.com', password: 'password',
-                          password_confirmation: 'password',
-                          first_name: 'Jon', last_name: 'Snow')
-
-      login_as(user, scope: :user)
-      visit new_post_path
       fill_in 'post[date]', with: Date.today
       fill_in 'post[rationale]', with: 'Some rationale'
       click_on 'Save'
@@ -33,12 +46,6 @@ describe 'Post' do
 
     it 'should be associated to a user' do
       # TODO: Refactor
-      user = User.create!(email: 'test3@test.com', password: 'password',
-                          password_confirmation: 'password',
-                          first_name: 'Jon', last_name: 'Snow')
-
-      login_as(user, scope: :user)
-      visit new_post_path
       fill_in 'post[date]', with: Date.today
       fill_in 'post[rationale]', with: 'User Association'
       click_on 'Save'
