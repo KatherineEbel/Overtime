@@ -4,16 +4,16 @@ require 'rails_helper'
 
 describe 'Post' do
   before do
-    user = User.create!(email: 'post@test.com', password: 'password',
+    @user = User.create!(email: 'post@test.com', password: 'password',
                         password_confirmation: 'password',
                         first_name: 'Jon', last_name: 'Snow')
 
-    login_as(user, scope: :user)
+    login_as(@user, scope: :user)
   end
   describe 'index' do
     before do
-      Post.create(date: Date.today, rationale: 'Post1')
-      Post.create(date: Date.today, rationale: 'Post2')
+      Post.create!(date: Date.today, rationale: 'Post1', user_id: @user.id)
+      Post.create!(date: Date.today, rationale: 'Post2', user_id: @user.id)
       visit posts_path
     end
     it "should be reached successfully" do
