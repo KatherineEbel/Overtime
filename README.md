@@ -4,7 +4,7 @@ Key requirement: company needs documentation that salaried employees did or did 
 
 - Post -> data:date rationale:text
 X User -> Devise
-- AdminUser -> STI
+X AdminUser -> STI
 
 ## Features
 - Approval Workflow
